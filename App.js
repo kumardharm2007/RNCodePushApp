@@ -1,86 +1,41 @@
-import React, {Component} from 'react';
-import {
-  Text,
-  Button,
-  StyleSheet,
-  View,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-export default class ButtonBasics extends Component {
-  _onPressButton() {
-    console.log('You tapped the button!');
+export default class App extends React.Component {
+  state = {
+    email: "",
+    password: ""
   }
-
-  constructor(props) {
-    super(props);
-    this.state = {isLoading: true};
-  }
-
-  componentDidMount() {
-    return fetch('https://facebook.github.io/react-native/movies.json')
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            dataSource: responseJson.movies,
-          },
-          function() {},
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-
   render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-
     return (
       <View style={styles.container}>
-        <View style={{flex: 1, paddingTop: 20}}>
-          <FlatList
-            data={this.state.dataSource}
-            renderItem={({item}) => (
-              <Text>
-                {item.title}, {item.releaseYear}
-              </Text>
-            )}
-            keyExtractor={({id}, index) => id}
-          />
+        <Text style={styles.logo}>HeyAPP</Text>
+        <View style={styles.inputView} >
+          <TextInput
+            style={styles.inputText}
+            placeholder="Email..."
+            placeholderTextColor="#003f5c"
+            onChangeText={text => this.setState({ email: text })} />
         </View>
+        <View style={styles.inputView} >
+          <TextInput
+            secureTextEntry
+            style={styles.inputText}
+            placeholder="Password..."
+            placeholderTextColor="#003f5c"
+            onChangeText={text => this.setState({ password: text })} />
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.forgot}>Forgot Password?</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.loginBtn}>
+          <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles.loginText}>Signup</Text>
+        </TouchableOpacity>
 
-        <View>
-          <Text>Hello, world!</Text>
-        </View>
-        <View>
-          <Text style={styles.red}>just red</Text>
-          <Text style={styles.bigBlue}>just bigBlue</Text>
-          <Text style={[styles.bigBlue, styles.red]}>bigBlue, then red</Text>
-          <Text style={[styles.red, styles.bigBlue]}>red, then bigBlue</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button onPress={this._onPressButton} title="Press Me" />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={this._onPressButton}
-            title="Press Me"
-            color="#841584"
-          />
-        </View>
-        <View style={styles.alternativeLayoutButtonContainer}>
-          <Button onPress={this._onPressButton} title="This looks great!" />
-          <Button onPress={this._onPressButton} title="OK!" color="#841584" />
-        </View>
+
       </View>
     );
   }
@@ -89,22 +44,44 @@ export default class ButtonBasics extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#003f5c',
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonContainer: {
-    margin: 20,
+  logo: {
+    fontWeight: "bold",
+    fontSize: 50,
+    color: "#fb5b5a",
+    marginBottom: 40
   },
-  alternativeLayoutButtonContainer: {
-    margin: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  inputView: {
+    width: "80%",
+    backgroundColor: "#465881",
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
+    padding: 20
   },
-  bigBlue: {
-    color: 'blue',
-    fontWeight: 'bold',
-    fontSize: 30,
+  inputText: {
+    height: 50,
+    color: "white"
   },
-  red: {
-    color: 'red',
+  forgot: {
+    color: "white",
+    fontSize: 11
   },
+  loginBtn: {
+    width: "80%",
+    backgroundColor: "#fb5b5a",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    marginBottom: 10
+  },
+  loginText: {
+    color: "white"
+  }
 });
